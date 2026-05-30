@@ -1,0 +1,10 @@
+[project]
+name = "daikin-ac-control"
+version = "0.1.0"
+description = "Dependency-free Python CLI for Daikin ONECTA AC status reads"
+requires-python = ">=3.11"
+
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
+
