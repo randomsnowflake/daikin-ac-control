@@ -80,6 +80,13 @@ python3 -m daikin_ac_control exchange-code "CODE_FROM_CALLBACK"
 
 Ask the account owner to authorize the URL and provide the callback code.
 
+## Pitfalls
+
+- When setting a fixed fan level, Daikin may require `powerfulMode` to be off before `fanControl` becomes settable. Use the CLI `fan-level` command and let the client handle this sequence.
+- Avoid redundant `powerfulMode=off` writes when it is already off; they waste API quota and can trigger `HTTP 429` rate limits.
+- If Daikin returns `HTTP 429`, wait about 60 seconds before retrying instead of looping aggressively.
+- "Power mode" and "fan level 5" are separate controls. Do not map power/boost/turbo requests to fan level 5.
+
 ## Safety
 
 Only use the implemented CLI commands above for writes. Do not invent write
