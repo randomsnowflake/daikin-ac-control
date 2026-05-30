@@ -1,10 +1,44 @@
 [project]
 name = "daikin-ac-control"
 version = "0.1.0"
-description = "Dependency-free Python CLI for Daikin ONECTA AC status reads"
+description = "Dependency-free Python CLI and Codex/LLM skill for controlling Daikin ONECTA air conditioners via the official cloud API"
+readme = "README.md"
 requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "Alexander Lehmann" },
+]
+keywords = [
+    "daikin",
+    "onecta",
+    "air-conditioning",
+    "hvac",
+    "home-automation",
+    "cli",
+    "oauth",
+    "llm",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Home Automation",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/randomsnowflake/daikin-ac-control"
+Repository = "https://github.com/randomsnowflake/daikin-ac-control"
+Issues = "https://github.com/randomsnowflake/daikin-ac-control/issues"
+
+[project.scripts]
+daikin-ac-control = "daikin_ac_control.__main__:main"
 
 [tool.pyright]
 pythonVersion = "3.11"
 typeCheckingMode = "basic"
-

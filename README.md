@@ -1,18 +1,65 @@
 # Daikin AC Control
 
 Small Python CLI and LLM skill for reading and controlling a Daikin ONECTA air
-conditioner via the official Daikin cloud API.
+conditioner via the official Daikin cloud API. It is designed for simple
+terminal automation and Codex/LLM agent workflows.
 
 This is an independent open source project. It is not affiliated with,
 endorsed by, or supported by Daikin or the AC manufacturer.
 
-It can complete OAuth, store a refresh token outside the repository, fetch your
-gateway devices, summarize the one AC unit in the account, and apply narrow
-cooling controls.
-
 No third-party Python packages are required.
 
-## Usage
+## Features
+
+- OAuth setup against the Daikin ONECTA cloud API.
+- Local refresh-token storage outside the repository.
+- AC status summaries for agent and voice workflows.
+- Cooling controls for power, setpoint, fixed fan level, and Daikin
+  `powerfulMode`/power mode.
+- Automatic single-AC selection and explicit `DAIKIN_DEVICE_ID` support for
+  accounts with multiple AC devices.
+- Bundled Codex/LLM skill for natural-language AC control.
+
+## Requirements
+
+- Python 3.11 or newer.
+- A Daikin account with an AC visible in the ONECTA app.
+- A Daikin Developer Portal application with the `openid`,
+  `onecta:basic.integration`, and `offline_access` scopes.
+- A redirect URL that you control and have registered with the Daikin
+  Developer Portal.
+
+## Quick Start
+
+Clone the repository and create a local config file:
+
+```bash
+git clone https://github.com/randomsnowflake/daikin-ac-control.git
+cd daikin-ac-control
+cp .env-example .env
+```
+
+Edit `.env` with your Daikin client ID, client secret, and redirect URI. Then
+create an authorization URL:
+
+```bash
+python3 -m daikin_ac_control auth-url
+```
+
+Open the URL, authorize with Daikin, copy the code from your callback handler,
+and exchange it for a local token file:
+
+```bash
+python3 -m daikin_ac_control exchange-code "CODE_FROM_CALLBACK"
+```
+
+Verify access:
+
+```bash
+python3 -m daikin_ac_control status
+```
+
+## CLI Usage
 
 Run without parameters to see the available commands:
 
@@ -41,6 +88,12 @@ Example status output:
 
 ```text
 AC: on | mode: cooling | setpoint: 18 C | fan: 3/5 | flaps: vertical stop, horizontal swing | room: 22 C | outside: 29 C | powerful: off
+```
+
+If installed as a package, the console script is also available:
+
+```bash
+daikin-ac-control status
 ```
 
 ## Device Selection
@@ -276,6 +329,20 @@ python3 -m unittest discover -v
 The tests mock the Daikin API and cover config loading, OAuth token handling,
 HTTP error handling, device selection, status formatting, CLI routing, write
 payloads, validation failures, and polling for confirmed state.
+
+## Limitations
+
+- This project uses the Daikin cloud API, so it requires internet access and a
+  working Daikin cloud service.
+- Control commands are intentionally narrow and cooling-focused.
+- Supported devices are the AC gateway devices exposed through the tested
+  ONECTA API shape. Other Daikin device classes may need additional mapping.
+- The bundled LLM skill shells out to this CLI. Complete OAuth setup and verify
+  `status` before expecting agent workflows to work.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
 
 ## Server Deployment
 
