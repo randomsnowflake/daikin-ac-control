@@ -198,7 +198,8 @@ def set_powerful(settings: Settings, value: str) -> dict[str, Any]:
     _validate_choice(climate, "powerfulMode", target)
     device_id = _device_id(device)
     embedded_id = str(climate.get("embeddedId") or "climateControl")
-    patch_characteristic(settings, device_id, embedded_id, "powerfulMode", None, target)
+    if current != target:
+        patch_characteristic(settings, device_id, embedded_id, "powerfulMode", None, target)
     return {"device_id": device_id, "embedded_id": embedded_id, "powerful": target}
 
 
