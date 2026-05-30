@@ -528,6 +528,17 @@ class ClientValidationAndWriteTests(unittest.TestCase):
         self.assertEqual(patch_json.call_args_list[0].args[2], {"value": "off"})
         self.assertEqual(patch_json.call_args_list[1].args[2], {"value": "off"})
 
+    def test_set_powerful_skips_noop_power_mode_write(self) -> None:
+        powerful_off = ac_device(powerful="off")
+        with patch("daikin_ac_control.client.get_gateway_devices", return_value=[powerful_off]), patch(
+            "daikin_ac_control.client.access_token",
+            return_value="token",
+        ), patch("daikin_ac_control.client.patch_json", return_value={}) as patch_json:
+            result = client.set_powerful(self.settings, "off")
+
+        self.assertEqual(result["powerful"], "off")
+        patch_json.assert_not_called()
+
     def test_patch_characteristic_builds_daikin_url(self) -> None:
         with patch("daikin_ac_control.client.access_token", return_value="token"), patch(
             "daikin_ac_control.client.patch_json",
