@@ -245,6 +245,11 @@ python3 -m daikin_ac_control power-mode off
 python3 -m daikin_ac_control power-mode toggle
 ```
 
+Power mode and fixed fan level are separate controls. Do not treat "power mode",
+"boost", or "turbo" as fan level 5. The CLI also avoids redundant
+`powerfulMode=off` writes when it is already off, because Daikin can rate-limit
+unnecessary control calls.
+
 Turn the AC off:
 
 ```bash
